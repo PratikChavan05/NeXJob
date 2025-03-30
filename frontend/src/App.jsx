@@ -4,7 +4,7 @@ import { UserData } from "./context/UserContext";
 import HomeSeeker from "./pages/HomeSeeker";
 import JobseekerRegister from "./pages/JobseekerRegister";
 import Verify from "./pages/Verify";
-import JobSeekerLogin from "./pages/JobSeekerLogin";
+import JobseekerLogin from "./pages/JobseekerLogin";
 import Forgot from "./pages/Forgot";
 import Reset from "./pages/Reset";
 import JobRecruiterRegister from "./pages/JobRecruiterRegister";
@@ -70,7 +70,7 @@ const App = () => {
         {/* Authentication Routes */}
         <Route path="/register-seeker" element={isAuth || isAuthRecruiter ? <AllJobs /> : <JobseekerRegister />} />
         <Route path="/register-recruiter" element={isAuth || isAuthRecruiter ? <AllJobs /> : <JobRecruiterRegister />} />
-        <Route path="/login-seeker" element={isAuth ? <AllJobs /> : <JobSeekerLogin />} />
+        <Route path="/login-seeker" element={isAuth ? <AllJobs /> : <JobseekerLogin />} />
         <Route path="/login-recruiter" element={isAuthRecruiter ? <MyJobs /> : <JobRecruiterLogin />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin" element={<VerifyRecruiter />} />
