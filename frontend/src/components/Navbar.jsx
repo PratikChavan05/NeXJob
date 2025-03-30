@@ -80,6 +80,12 @@ const Navbar = () => {
               <Link to="/meet" className="text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors">
                 My Meets
               </Link>
+              <Link to="/homerecruiter" className="text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors">
+                Summary
+              </Link>
+              <Link to="/market" className="text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors">
+                Market Analysis
+              </Link>
             </>
           )}
         </nav>

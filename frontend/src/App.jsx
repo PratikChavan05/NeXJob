@@ -36,6 +36,7 @@ import RecruiterInterviewDashboard from "./components/RecruiterScheduleInterview
 
 import Applicants from "./pages/Applicants";
 import Recom from "./pages/Recommend.jsx";
+import JobMarketDashboard from "./pages/Market.jsx";
 
 
 
@@ -104,6 +105,9 @@ const App = () => {
         <Route path="/schedule-interview" element={<ScheduleInterview />} />
         <Route path="/chatbot" element={<SeekerChatbot />} />
         <Route path="/meet" element={<RecruiterInterviewDashboard />} />
+        <Route path="/homerecruiter" element={isAuthRecruiter?<HomeRecruiter />:<LandingPage/>} />
+        <Route path="/market" element={isAuthRecruiter?<JobMarketDashboard />:<LandingPage/>} />
+
       </Routes>
     </BrowserRouter>
   );
