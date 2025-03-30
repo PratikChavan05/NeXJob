@@ -12,7 +12,7 @@ import JobRecruiterLogin from "./pages/JobRecruiterLogin";
 import AdminLogin from "./pages/AdminLogin";
 import VerifyRecruiter from "./pages/VerifyRecruiter";
 import ForgotRecruiter from "./pages/ForgotRecruiter";
-import ResetRecruiter from "./pages/resetRecruiter";
+import ResetRecruiter from "./pages/ResetRecruiter";
 import HomeRecruiter from "./pages/HomeRecruiter";
 import JobPosting from "./pages/JobPosting";
 import AllJobs from "./pages/AllJobs";
