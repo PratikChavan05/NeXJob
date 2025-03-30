@@ -7,38 +7,63 @@ axios.defaults.withCredentials = true;
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [jobSeeker, setJobSeeker] = useState(null);
+  const [recruiter, setRecruiter] = useState(null);
+  const [admin, setAdmin] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [isAuthRecruiter, setIsAuthRecruiter] = useState(false);
-  const [btnLoading, setBtnLoading] = useState(false);
-  const [admin, setAdmin] = useState(null);
   const [isAuthAdmin, setIsAuthAdmin] = useState(false);
+  const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const getErrorMessage = (error) => error.response?.data?.message || "Something went wrong";
 
   async function loginUser(email, password, navigate) {
     setBtnLoading(true);
     try {
       const { data } = await axios.post("/api/user/login", { email, password });
       toast.success(data.message);
-      setUser(data.user);
+      setJobSeeker(data.user);
       setIsAuth(true);
+      setIsAuthRecruiter(false);
+      setIsAuthAdmin(false);
       navigate("/alljobs");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      toast.error(getErrorMessage(error));
     } finally {
       setBtnLoading(false);
     }
   }
+
   async function loginRecruiter(email, password, navigate) {
     setBtnLoading(true);
     try {
       const { data } = await axios.post("/api/recruiter/login", { email, password });
       toast.success(data.message);
-      setUser(data.user);
+      setRecruiter(data.user);
+      setIsAuth(false);
       setIsAuthRecruiter(true);
+      setIsAuthAdmin(false);
       navigate("/myjobs");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      toast.error(getErrorMessage(error));
+    } finally {
+      setBtnLoading(false);
+    }
+  }
+
+  async function loginAdmin(email, password, navigate) {
+    setBtnLoading(true);
+    try {
+      const { data } = await axios.post("/api/admin/admin-login", { email, password });
+      toast.success(data.message);
+      setAdmin(data.admin);
+      setIsAuth(false);
+      setIsAuthRecruiter(false);
+      setIsAuthAdmin(true);
+      navigate("/admin");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     } finally {
       setBtnLoading(false);
     }
@@ -47,139 +72,41 @@ export const UserProvider = ({ children }) => {
   async function registerUser(name, email, password, navigate) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post("/api/user/register", {
-        name,
-        email,
-        password,
-      });
+      const { data } = await axios.post("/api/user/register", { name, email, password });
       toast.success(data.message);
       navigate(`/verify/${data.token}`);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Registration failed");
+      toast.error(getErrorMessage(error));
     } finally {
       setBtnLoading(false);
     }
   }
-  async function registerRecruiter(companyName, email, password, phone, website, industry, location,navigate) {
-    console.log( location)
+
+  async function registerRecruiter(companyName, email, password, phone, website, industry, location, navigate) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post("/api/recruiter/register", {
-      companyName,
-      password,
-      email,
-      phone,
-      website,
-      industry,
-      location,
-      navigate
-      });
+      const { data } = await axios.post("/api/recruiter/register", { companyName, email, password, phone, website, industry, location });
       toast.success(data.message);
       navigate(`/verifyRecruiter/${data.token}`);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Registration failed");
+      toast.error(getErrorMessage(error));
     } finally {
       setBtnLoading(false);
     }
   }
-
-
-
 
   async function verify(token, otp, navigate) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post("/api/user/verify/" + token, {
-        otp,
-      });
+      const { data } = await axios.post(`/api/user/verify/${token}`, { otp });
       toast.success(data.message);
-      setUser(data.user);
+      setJobSeeker(data.user);
       setIsAuth(true);
-      setBtnLoading(false);
+      setIsAuthRecruiter(false);
+      setIsAuthAdmin(false);
       navigate("/alljobs");
     } catch (error) {
-      toast.error(error.response?.data?.message);
-      setBtnLoading(false);
-    }
-  }
-
-  async function forgotUser(email, navigate) {
-    setBtnLoading(true);
-    try {
-      const { data } = await axios.post("/api/user/forgot", { email });
-      toast.success(data.message);
-      navigate(`/reset/${data.token}`);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Password reset request failed"
-      );
-    } finally {
-      setBtnLoading(false);
-    }
-  }
-  async function verifyRecruiter(token, otp, navigate) {
-    setBtnLoading(true);
-    try {
-      const { data } = await axios.post(`/api/recruiter/verify/${token}`, { otp });
-      toast.success(data.message);
-      
-      
-      setIsAuthRecruiter(false);
-  
-      navigate("/");
-    } catch (error) {
-      toast.error(error.response?.data?.message);
-  
-      if (error.response?.data?.message === "Invalid or expired token") {
-        navigate("/register-recruiter"); 
-      }
-  
-      setBtnLoading(false);
-    }
-  }
-  
-
-  async function forgotRecruiter(email, navigate) {
-    setBtnLoading(true);
-    try {
-      const { data } = await axios.post("/api/recruiter/forgot", { email });
-      toast.success(data.message);
-      navigate(`/resetRecruiter/${data.token}`);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message || "Password reset request failed"
-      );
-    } finally {
-      setBtnLoading(false);
-    }
-  }
-
-  async function resetUser(token, otp, password, navigate) {
-    setBtnLoading(true);
-    try {
-      const { data } = await axios.post(`/api/user/reset/${token}`, {
-        otp,
-        password,
-      });
-      toast.success(data.message);
-      navigate("/login-seeker");
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Password reset failed");
-    } finally {
-      setBtnLoading(false);
-    }
-  }
-  async function resetRecruiter(token, otp, password, navigate) {
-    setBtnLoading(true);
-    try {
-      const { data } = await axios.post(`/api/recruiter/reset/${token}`, {
-        otp,
-        password,
-      });
-      toast.success(data.message);
-      navigate("/login-recruiter");
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Password reset failed");
+      toast.error(getErrorMessage(error));
     } finally {
       setBtnLoading(false);
     }
@@ -188,59 +115,88 @@ export const UserProvider = ({ children }) => {
   async function fetchUser() {
     try {
       const { data } = await axios.get("/api/user/me");
-      setUser(data);
-      setIsAuth(true);
+      if (data) {
+        setJobSeeker(data);
+        setIsAuth(true);
+        setIsAuthRecruiter(false);
+        setIsAuthAdmin(false);
+      }
     } catch (error) {
       console.log("User fetch error:", error);
-    } finally {
-      setLoading(false);
     }
   }
+
   async function fetchRecruiter() {
     try {
       const { data } = await axios.get("/api/recruiter/me");
-      setUser(data);
-      setIsAuthRecruiter(true);
+      if (data) {
+        setRecruiter(data);
+        setIsAuth(false);
+        setIsAuthRecruiter(true);
+        setIsAuthAdmin(false);
+      }
     } catch (error) {
-      console.log("User fetch error:", error);
-    } finally {
-      setLoading(false);
+      console.log("Recruiter fetch error:", error);
     }
   }
 
   async function fetchAdmin() {
     try {
       const { data } = await axios.get("/api/admin/meadmin");
-      setAdmin(data);
-      setIsAuthAdmin(true);
-      setLoading(false);
+      if (data) {
+        setAdmin(data);
+        setIsAuth(false);
+        setIsAuthRecruiter(false);
+        setIsAuthAdmin(true);
+      }
     } catch (error) {
       console.log("Admin fetch error:", error);
     }
   }
 
-  async function loginAdmin(email, password, navigate) {
-    setBtnLoading(true);
+  async function logout(navigate) {
     try {
-      const { data } = await axios.post("/api/admin/admin-login", {
-        email,
-        password,
-      });
-      toast.success(data.message);
-      setAdmin(data.admin);
-      setIsAuthAdmin(true);
-      navigate("/admin");
+      await axios.get("/api/user/logout");
+      toast.success("Logged out successfully!");
+      setJobSeeker(null);
+      setRecruiter(null);
+      setAdmin(null);
+      setIsAuth(false);
+      setIsAuthRecruiter(false);
+      setIsAuthAdmin(false);
+      navigate("/");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Admin login failed");
-    } finally {
-      setBtnLoading(false);
+      toast.error(getErrorMessage(error));
     }
   }
 
   useEffect(() => {
-    fetchUser();
-    fetchAdmin();
-    fetchRecruiter();
+    async function fetchData() {
+      setLoading(true);
+      const userPromise = fetchUser();
+      const recruiterPromise = fetchRecruiter();
+      const adminPromise = fetchAdmin();
+
+      const results = await Promise.allSettled([userPromise, recruiterPromise, adminPromise]);
+
+      // Check which API succeeded first
+      if (results[0].status === "fulfilled" && results[0].value) {
+        setIsAuth(true);
+        setIsAuthRecruiter(false);
+        setIsAuthAdmin(false);
+      } else if (results[1].status === "fulfilled" && results[1].value) {
+        setIsAuth(false);
+        setIsAuthRecruiter(true);
+        setIsAuthAdmin(false);
+      } else if (results[2].status === "fulfilled" && results[2].value) {
+        setIsAuth(false);
+        setIsAuthRecruiter(false);
+        setIsAuthAdmin(true);
+      }
+
+      setLoading(false);
+    }
+    fetchData();
   }, []);
 
   return (
@@ -250,25 +206,17 @@ export const UserProvider = ({ children }) => {
         loginRecruiter,
         loginAdmin,
         registerUser,
-        forgotUser,
-        forgotRecruiter,
-        resetRecruiter,
-        resetUser,
-        btnLoading,
+        registerRecruiter,
+        logout,
         isAuth,
-        user,
+        isAuthRecruiter,
+        isAuthAdmin,
+        jobSeeker,
+        recruiter,
         admin,
         loading,
-        setIsAuth,
-        setUser,
-        setAdmin,
-        isAuthAdmin,
+        btnLoading,
         verify,
-        verifyRecruiter,
-        registerRecruiter,
-        isAuthRecruiter,
-        setIsAuthRecruiter,
-      
       }}
     >
       {children}

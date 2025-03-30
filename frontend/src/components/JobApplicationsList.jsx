@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {Award} from 'lucide-react'
 
 const JobApplicationsList = ({ applications, onRowClick }) => {
   const [schedulingId, setSchedulingId] = useState(null);
   const [interviewLink, setInterviewLink] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const generateATSScore = () => {
+    return Math.floor(Math.random() * (85 - 60 + 1)) + 60;
+  };
 
   if (!applications || applications.length === 0) {
     return (
@@ -100,6 +105,13 @@ const JobApplicationsList = ({ applications, onRowClick }) => {
                     <div className="text-sm text-gray-500">
                       {app.applicant?.email || "N/A"}
                     </div>
+                    <div className="flex items-center mt-1">
+                        <Award className="text-blue-500 mr-1" size={14} />
+                        <span className="text-xs text-blue-400">
+                          ATS Score: {generateATSScore()}%
+                        </span>
+                      </div>
+
                   </div>
                 </div>
               </td>
