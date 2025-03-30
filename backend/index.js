@@ -8,6 +8,7 @@ import cloudinary from "cloudinary";
 import { createServer } from "http";  // Import http module
 import { Server } from "socket.io"; 
 import cors from "cors";  // Import cors
+import path from 'path'
 dotenv.config();
 const app = express();
 const port = process.env.PORT;
@@ -68,7 +69,18 @@ app.use("/api/interview", InterviewRoutes);
 app.use("/api/chatbot", chatbotRoutes);
 app.use("/api/application/recom", recommendationRoutes);
 
-// Create an HTTP server using Express app
+
+
+const __dirname = path.resolve();
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
+
+
+
 const server = createServer(app);
 
 // Initialize Socket.io
