@@ -51,6 +51,12 @@ const Navbar = () => {
             My Applications
           </a>
           <a
+            href="/recommend"
+            className="text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors"
+          >
+            Recommended Jobs
+          </a>
+          <a
             href="/seeker"
             className="text-sm font-medium text-gray-300 hover:text-blue-400 transition-colors"
           >

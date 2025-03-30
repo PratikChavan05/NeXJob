@@ -27,3 +27,7 @@ export const updateApplicationStatus = async (id, status) => {
   }
 };
 
+export const fetchRecommendedJobs = async (seekerId) => {
+    const response = await API.get(`/recom/recommend/${seekerId}`);
+    return response.data;
+  };

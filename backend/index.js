@@ -57,6 +57,7 @@ import connectDb from "./database/db.js";
 
 import InterviewRoutes from "./routes/InterviewRoutes.js";
 import chatbotRoutes from "./routes/chatbotRoutes.js";
+import recommendationRoutes from './routes/recommendationRoutes.js'
 app.use("/api/user", userRoutes);
 app.use("/api/recruiter", recruiterRoutes);
 app.use("/api/admin", adminRoutes);
@@ -65,6 +66,7 @@ app.use("/api/application", applicationRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/interview", InterviewRoutes);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/application/recom", recommendationRoutes);
 
 // Create an HTTP server using Express app
 const server = createServer(app);

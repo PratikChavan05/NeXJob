@@ -35,6 +35,7 @@ import SeekerChatbot from "./components/SeekerChatbot.jsx";
 import RecruiterInterviewDashboard from "./components/RecruiterScheduleInterview.jsx";
 
 import Applicants from "./pages/Applicants";
+import Recom from "./pages/Recommend.jsx";
 
 // General Pages
 
@@ -123,11 +124,15 @@ const App = () => {
         />
         <Route
           path="/allapplication/:id"
-          element={isAuth ? <JobApplicationDetailsPage /> : <LandingPage />}
+          element={isAuthRecruiter ? <JobApplicationDetailsPage /> : <LandingPage />}
         />
         <Route
           path="/application/:id"
           element={isAuth ? <ApplicationDetailPage /> : <LandingPage />}
+        />
+        <Route
+          path="/recommend"
+          element={isAuth ? <Recom /> : <LandingPage />}
         />
 
         {/* Recruiter Routes */}
