@@ -7,16 +7,16 @@ import { useNavigate } from "react-router-dom";
 const Recom = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user } = UserData();
+  const { jobSeeker } = UserData();
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadJobs = async () => {
-      if (!user?._id) return;
+      if (!jobSeeker?._id) return;
 
       try {
         setLoading(true);
-        const recommendedJobs = await fetchRecommendedJobs(user._id);
+        const recommendedJobs = await fetchRecommendedJobs(jobSeeker._id);
         setJobs(recommendedJobs);
       } catch (error) {
         console.error("Error fetching recommended jobs:", error);
@@ -25,7 +25,7 @@ const Recom = () => {
       }
     };
     loadJobs();
-  }, [user?._id]);
+  }, [jobSeeker?._id]);
 
   return (
     <div className="min-h-screen bg-black text-white p-4 sm:p-6 lg:p-8 relative overflow-hidden">

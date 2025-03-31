@@ -26,7 +26,7 @@ router.post("/schedule-interview", isAuth, async (req, res) => {
 
     // Create unique interview ID and link
     const interviewId = uuidv4();
-    const interviewLink = `http://localhost:5173/interview/${interviewId}`;
+    const interviewLink = `https://nexjob-1ioj.onrender.com/interview/${interviewId}`;
 
     // Create new interview record
     const newInterview = new Interview({
