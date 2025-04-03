@@ -53,7 +53,6 @@ export const applyForJob = [
       coverLetterUrl = await uploadToCloudinary(req.files.coverLetter[0].buffer, `coverLetter_${userId}`);
     }
 
-    // 🟢 Try getting ATS Score (without failing the application)
     try {
       const atsResponse = await axios.post(
         "https://ats-score-checker-api.com/calculate",
@@ -69,10 +68,9 @@ export const applyForJob = [
       );
       atsScore = atsResponse.data.score || 0;
     } catch (error) {
-      console.warn("ATS API failed:", error.message); // Logs error but continues execution
+      console.warn("ATS API failed:", error.message); 
     }
 
-    // Create Application Entry
     const application = await Application.create({
       job: jobId,
       applicant: userId,

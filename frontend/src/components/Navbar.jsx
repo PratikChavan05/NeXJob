@@ -6,7 +6,13 @@ import { UserData } from "../context/UserContext";
 
 
 const Navbar = () => {
-  const { setIsAuth, setUser, isAuth, isAuthRecruiter, setIsAuthRecruiter } = UserData();
+  const {  
+    setIsAuth,
+  
+    setIsAuthRecruiter,
+    setJobSeeker ,
+  isAuth,
+isAuthRecruiter} = UserData();
   const navigate = useNavigate();
 
   console.log("Auth Status - Seeker:", isAuth, "Recruiter:", isAuthRecruiter);
@@ -15,7 +21,7 @@ const Navbar = () => {
     try {
       const { data } = await axios.get("/api/user/logout");
       toast.success(data.message);
-      setUser([]);
+      setJobSeeker([]);
       setIsAuth(false);
       setIsAuthRecruiter(false);
       navigate("/");

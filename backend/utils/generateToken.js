@@ -13,3 +13,4 @@ const generateToken=(user,res)=>{
 };
 
 export default generateToken;
+
