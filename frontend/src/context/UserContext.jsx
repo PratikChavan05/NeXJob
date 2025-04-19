@@ -112,6 +112,25 @@ export const UserProvider = ({ children }) => {
     }
   }
 
+
+  
+  async function verifyRecruiter (token, otp, navigate) {
+    setBtnLoading(true);
+    try {
+      const { data } = await axios.post(`/api/recruiter/verify/${token}`, { otp });
+      toast.success(data.message);
+      setRecruiter(data.user);
+      setIsAuth(false);
+      setIsAuthRecruiter(false);
+      setIsAuthAdmin(false);
+      navigate("/login-recruiter");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      setBtnLoading(false);
+    }
+  }
+
   async function fetchUser() {
     try {
       const { data } = await axios.get("/api/user/me");
@@ -220,6 +239,7 @@ export const UserProvider = ({ children }) => {
         loading,
         btnLoading,
         verify,
+        verifyRecruiter,
       }}
     >
       {children}

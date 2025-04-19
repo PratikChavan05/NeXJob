@@ -162,7 +162,7 @@ const Verify = () => {
           </button>
           
           <div className='mt-4 text-gray-300 text-sm'>
-            <Link to="/login" className='font-medium text-[#50c878] hover:underline'>
+            <Link to="/login-seeker" className='font-medium text-[#50c878] hover:underline'>
               Return to login
             </Link>
           </div>

@@ -78,7 +78,7 @@ const App = () => {
 
         {/* OTP & Verification */}
         <Route path="/verify/:token" element={<Verify />} />
-        <Route path="/verifyRecruiter/:token" element={<VerifyRecruiter />} />
+        <Route path="/verifyRecruiter/:token" element={<VerifyR />} />
         <Route path="/forgot" element={<Forgot />} />
         <Route path="/forgot-recruiter" element={<ForgotRecruiter />} />
         <Route path="/reset/:token" element={<Reset />} />
